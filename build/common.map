@@ -1,0 +1,51 @@
+P r o c e s s   t a b l e
+=========================
+
+Pid #		Load_mod
+0000		common.out
+
+
+M a p   p e r   c l u s t e r
+=============================
+
+Cluster: rom
+Chips:	 i_rom, i_ram, dis_mem, io_mem
+
+Pid #	Section		Physical    Virtual     Size        Amode       Chip
+0000    <reserved>     	0x000026    0x000026    0x000002    (absolute)  i_rom       
+0000    .text          	0x00031a    0x00f31a    0x0002da    (absolute)  i_ram       
+
+
+M A P   p e r   L O A D _ M O D
+===============================
+
+
+Load module common.out:
+Section        	Virtual     Size        Physical    
+.text          	0x00f31a    0x0002da    0x00031a    
+ 
+Symbols:  Space SMC88_space
+                 Sorted on symbol                    Sorted on address
+                 ----------------                    -----------------
+     CODECOMMONADDRESS - 0x00f31a         CODECOMMONADDRESS - 0x00f31a
+         CommonCodeEnd - 0x00f5f4      dlnBackgroundHandler - 0x00f31a
+  dlnBackgroundHandler - 0x00f31a       dlnwaDefaultDisplay - 0x00f369
+          dlnBannerMsg - 0x00f54a           dlnwaSetDisplay - 0x00f524
+            dlnDateInf - 0x00f554              dlnBannerMsg - 0x00f54a
+        dlnDaysInMonth - 0x00f587                dlnDateInf - 0x00f554
+ dlnGoBackFromOneMonth - 0x00f5c1            dlnDaysInMonth - 0x00f587
+         dlnNextRecord - 0x00f5e0     dlnGoBackFromOneMonth - 0x00f5c1
+   dlnwaDefaultDisplay - 0x00f369             dlnNextRecord - 0x00f5e0
+       dlnwaSetDisplay - 0x00f524             CommonCodeEnd - 0x00f5f4
+ 
+Symbols:  Space undefined
+                 Sorted on symbol                    Sorted on address
+                 ----------------                    -----------------
+        CommonCodeSize - 0x0002da            CommonCodeSize - 0x0002da
+
+
+Sections:
+
+common:
+Sectio   Virtual     Size        
+ .text - 0x00f31a    0x0002da

@@ -1,0 +1,11 @@
+CODECOMMONADDRESS     equ 0F31AH
+CommonCodeEnd         equ 0F5F4H
+dlnBackgroundHandler  equ 0F31AH
+dlnBannerMsg          equ 0F54AH
+dlnDateInf            equ 0F554H
+dlnDaysInMonth        equ 0F587H
+dlnGoBackFromOneMonth equ 0F5C1H
+dlnNextRecord         equ 0F5E0H
+dlnwaDefaultDisplay   equ 0F369H
+dlnwaSetDisplay       equ 0F524H
+CommonCodeSize        equ 002DAH

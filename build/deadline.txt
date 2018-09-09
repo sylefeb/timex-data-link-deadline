@@ -1,0 +1,49 @@
+WristApp: DEADLINE
+================================================================================
+
+Description:
+------------
+
+  Countdown before deadline
+
+ << wristapp overview >>
+
+
+Usage:
+------
+
+ Default State:
+ --------------
+
+ << default state overview >>
+
+  Switches:
+
+   MODE        - 
+   START/SPLIT - 
+   STOP/RESET  - 
+   CROWN-SET   - 
+
+
+ Set State:
+ ----------
+
+ << set  state overview >>
+
+  Switches:
+
+   MODE         - 
+   STOP/RESET   - 
+   CROWN-CW/CCW - 
+   CROWN-HOME   - 
+  
+
+Files:
+------
+
+ DEADLINE.APP             - application info
+ DEADLINE.TXT             - application description (this file)
+ DEADLINE_PAR_018.BIN     - application initialization parameter list
+ DEADLINE_CODE_018.BIN    - application code
+
+

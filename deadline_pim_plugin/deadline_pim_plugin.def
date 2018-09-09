@@ -1,0 +1,5 @@
+LIBRARY      "deadline_pim_plugin"
+
+EXPORTS
+	Show
+	ProcessData

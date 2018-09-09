@@ -1,0 +1,68 @@
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   1
+C:\M851\app\deadline\build\state2.asm
+ADDR   CODE      LINE SOURCELINE
+                   2 
+                   3 ; ********************************************************************
+                   4 ; *
+                   5 ; * M851 WRISTAPP BUILDER
+                   6 ; * Timex Corporation 2002 All Rights Reserved
+                   7 ; * July 2002
+                   8 ; *
+                   9 ; * WristApp: deadline
+                  10 ; *
+                  11 ; ********************************************************************
+                  12 
+                  13 
+                  88 
+                  90 
+                  93 
+                  94      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  95      ;
+                  96      ; ADD WRISTAPP SOURCE FILE TO BE IN THE STATE CODE
+                  97      ;
+                  98      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  99 
+                 100     INCLUDE 'C:\M851\App\deadline\src\dlnset.asm'
+                   1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   2 ;
+                   3 ; File Name    : dlnset.asm
+                   4 ; Purpose      : deadline Application Set State Manager
+                   5 ;
+                   6 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   7 ;    Copyright (C) 2003 Sylvain Lefebvre
+                   8 ;
+                   9 ;    This program is free software; you can redistribute it and/or modify
+                  10 ;    it under the terms of the GNU General Public License as published by
+                  11 ;    the Free Software Foundation; (version 2)
+                  12 ;
+                  13 ;    This program is distributed in the hope that it will be useful,
+                  14 ;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                  15 ;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                  16 ;    GNU General Public License for more details.
+                  17 ;
+                  18 ;    You should have received a copy of the GNU General Public License
+                  19 ;    along with this program; if not, write to the Free Software
+                  20 ;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+                  21 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  22 ;;;;;;;;;;;;;DO NOT MODIFY THE FOLLOWING SUBROUTINE DEFINITION;;;;;;;;;;;;;;;;;
+                  23 
+                  27                 DEFINE  SUBROUTINE      "'dlnset'"
+                  28 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  29 
+                  31 
+00F5F4            32 dlnSetStateManager:
+                  33 
+                  34                 car     utlYouRockStateManager
+00F5F4 F29F2B    +34 ;       carL    utlYouRockStateManager
+00F5F7 F8         35                 ret
+                 101 
+                 102      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 103      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 104 
+                 105 ;**END FILE STATE2.ASM
+
+Section summary:
+
+ NR ADDR   SIZE CYCLE NAME
+  1 00F5F4 0004     9 .text

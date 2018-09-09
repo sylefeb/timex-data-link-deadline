@@ -1,0 +1,1039 @@
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   1
+C:\M851\app\deadline\build\common.asm
+ADDR   CODE      LINE SOURCELINE
+                   2 
+                   3 ; ********************************************************************
+                   4 ; *
+                   5 ; * M851 WRISTAPP BUILDER
+                   6 ; * Timex Corporation 2002 All Rights Reserved
+                   7 ; * July 2002
+                   8 ; *
+                   9 ; * WristApp: deadline
+                  10 ; *
+                  11 ; ********************************************************************
+                  12 
+                  13 
+                  86 
+                  89 
+00F31A            91 CODECOMMONADDRESS:
+                  92 
+                  93      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  94      ;
+                  95      ; WRISTAPP SOURCE FILES TO BE IN THE COMMON SECTION
+                  96      ; * Always have the Background Handler routine to be the first file
+                  97      ;
+                  98      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  99 
+                 100     INCLUDE 'C:\M851\App\deadline\src\dlnbckhd.asm'
+                   1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   2 ;
+                   3 ; File Name     : dlnBckHd.asm
+                   4 ; Purpose       : Handles the following application specific functions:
+                   5 ;                   - application initialization
+                   6 ;                   - resource refresh
+                   7 ;
+                   8 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   9 ;    Copyright (C) 2003 Sylvain Lefebvre
+                  10 ;
+                  11 ;    This program is free software; you can redistribute it and/or modify
+                  12 ;    it under the terms of the GNU General Public License as published by
+                  13 ;    the Free Software Foundation; (version 2)
+                  14 ;
+                  15 ;    This program is distributed in the hope that it will be useful,
+                  16 ;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                  17 ;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                  18 ;    GNU General Public License for more details.
+                  19 ;
+                  20 ;    You should have received a copy of the GNU General Public License
+                  21 ;    along with this program; if not, write to the Free Software
+                  22 ;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+                  23 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  24 ;;;;;;;;;;;;;DO NOT MODIFY THE FOLLOWING SUBROUTINE DEFINITION;;;;;;;;;;;;;;;;;
+                  25 
+                  29                 DEFINE  SUBROUTINE      "'dlnBckHd'"
+                  30 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  31 
+                  32 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  33 ;
+                  34 ; Module Name : dlnBackgroundHandler
+                  35 ; Description : Handles application initialization and refresh resource handlers.
+                  36 ; Assumptions : COREInitializationASDAddress is already set by kernel.
+                  37 ;               COREInitializationADDAddress is already set by kernel.
+                  38 ; Input(s)    : None
+                  39 ; Output(s)   : None
+                  40 ;               ( Destroyed: All registers )
+                  41 ;
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   2
+
+ADDR   CODE      LINE SOURCELINE
+                  42 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  43 
+                  45 
+00F31A            46 dlnBackgroundHandler:
+                  47 
+                  48                 ; Load the event to be process to AReg.
+00F31A CED00AF1   49                 ld      A, [COREBackgroundEvent]
+                  50 
+                  51                 ; Check if INIT event.
+00F31E 3202       52                 cp      A, #COREEVENT_INIT
+                  53                 jr      NZ, dlnBackgroundProcessExit
+00F320 E70C      +53 ;       jrS     NZ, dlnBackgroundProcessExit
+                  54 
+00F322            55 dlnBackgroundInitEvent:
+                  56 
+                  57                 ;Init DB index to 0
+                  58 
+00F322 B000       59                                 ld A, #0
+00F324 BB0CF1     60                                 ld IY, [COREInitializationASDAddress]
+00F327 CE4500     61                                 ld [IY + DLNDBINDEXOFFSET + 0], A
+00F32A CE4501     62                                 ld [IY + DLNDBINDEXOFFSET + 1], A
+                  63 
+00F32D            64 dlnBackgroundProcessExit:
+                  65 
+00F32D F8         66                 ret
+                 101     INCLUDE 'C:\M851\App\deadline\src\dlndisp.asm'
+                   1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   2 ;
+                   3 ; File Name :   dlnDisp.asm
+                   4 ; Purpose   :   Deadline Wrist App Common Display Routines
+                   5 ;
+                   6 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   7 ;    Copyright (C) 2003 Sylvain Lefebvre
+                   8 ;
+                   9 ;    This program is free software; you can redistribute it and/or modify
+                  10 ;    it under the terms of the GNU General Public License as published by
+                  11 ;    the Free Software Foundation; (version 2)
+                  12 ;
+                  13 ;    This program is distributed in the hope that it will be useful,
+                  14 ;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                  15 ;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                  16 ;    GNU General Public License for more details.
+                  17 ;
+                  18 ;    You should have received a copy of the GNU General Public License
+                  19 ;    along with this program; if not, write to the Free Software
+                  20 ;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+                  21 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  22 ;;;;;;;;;;;;;DO NOT MODIFY THE FOLLOWING SUBROUTINE DEFINITION;;;;;;;;;;;;;;;;;
+                  23 
+                  25                     UNDEF SUBROUTINE
+                  27                 DEFINE  SUBROUTINE      "'dlndisp'"
+                  28 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  29 
+                  30 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  31 ;
+                  32 ; Module Name : dlnwaDefaultDisplay
+                  33 ; Description : Display MODE DEFAULT at default entry. This is merely used by the wizard
+                  34 ; Input(s)    : None
+                  35 ; Output(s)   : None
+                  36 ;
+                  37 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  38 
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   3
+
+ADDR   CODE      LINE SOURCELINE
+                  40 
+00F32E            41 TodayBuffer:
+00F32E 00         42                                 db 00 ;minute
+00F32F 00         43                                 db 00 ;hour
+00F330 00         44                                 db 00 ;day
+00F331 00         45                                 db 00 ;month
+00F332 00         46                                 db 00 ;year lo
+00F333 00         47                                 db 00 ;year hi
+00F334 00         48                                 db 00 ;dow
+00F335            49 TmpBuffer:
+00F335 00         50                                 db 00 ;day
+00F336 00         51                                 db 00 ;month
+00F337 00         52                                 db 00 ;year lo
+00F338 00         53                                 db 00 ;year hi
+00F339 00         54                                 db 00 ;dow
+00F33A            55 DeadlineBuffer:
+00F33A 00         56                                 db 00  ;dumb
+00F33B            57 DeadlineDatabaseData:
+00F33B 00         58                                 db 00  ;flags
+00F33C 10         59                                 db 10H ;day
+00F33D 01         60                                 db 01H ;month
+00F33E 04         61                                 db 04H ;year lo
+00F33F 20         62                                 db 20H ;year hi
+00F340 00         63                                 db 00  ;dow
+00F341            64 DeadlineDescDisplay:
+00F341 02FA       65                                 dw LCDMAINDMLINE2COL1
+00F343 08         66                                 db 08H 
+00F344            67 DeadlineDescData:
+00F344 00         68                                 db 00  ;desc [0]
+00F345 00         69                                 db 00  ;desc [1]
+00F346 00         70                                 db 00  ;desc [2]
+00F347 00         71                                 db 00  ;desc [3]
+00F348 00         72                                 db 00  ;desc [4]
+00F349 00         73                                 db 00  ;desc [5]
+00F34A 00         74                                 db 00  ;desc [6]
+00F34B 00         75                                 db 00  ;desc [7]
+                  76 
+00F34C            77 NumberOfDaysDecimal:
+00F34C 00         78                 db 00H ;    10     1
+00F34D 00         79                 db 00H ;  1000   100
+00F34E 00         80                 db 00H ;100000 10000
+                  81 
+00F34F            82 PastDeadline:
+00F34F 00         83                                 db 00H ; flag is deadline was in the past
+                  84 
+00F350            85 dlnDaysShortDisplay:
+00F350 17F9       86                 dw        LCDMAINDMLINE1COL22
+00F352 040E0B23   87                 db        4, DM5_D, DM5_A, DM5_Y, DM5_S
+       1D           
+                  88 
+00F357            89 dlnDaysLongDisplay:
+00F357 26F9       90                 dw        LCDMAINDMLINE1COL37
+00F359 020E32     91                 db        2, DM5_D, DM5_PERIOD
+                  92 
+00F35C            93 dlnEmptyDisplay:
+00F35C 11F9       94                 dw        LCDMAINDMLINE1COL16
+00F35E 050F171A   95                 db        5, DM5_E, DM5_M, DM5_P, DM5_T, DM5_Y
+       1E23         
+                  96 
+00F364            97 dlnPastDisplay:
+00F364 02F8       98                 dw        LCDUPPERDMCOL1
+00F366 0131       99                 db        1, DM5_MINUS
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   4
+
+ADDR   CODE      LINE SOURCELINE
+                 100 
+00F368           101 dlnLoadCount:
+00F368 00        102                                 db        00
+                 103                                 
+00F369           104 dlnwaDefaultDisplay:
+                 105 
+                 106 ;                               UTL_DECIMAL_MATH_MODE
+                 107                                 
+                 108 ;                               ld HL,#NumberOfDaysDecimal
+                 109 ;                               ld [HL],#99H
+                 110 ;                               inc HL
+                 111 ;                               ld [HL],#99H
+                 112 ;                               inc HL
+                 113 ;                               ld [HL],#00H
+                 114 ;                                                       
+                 115 ;                               ld HL,#NumberOfDaysDecimal+1
+                 116 ;                               ld A,[HL]       
+                 117 ;                               ld IX, #LCDMAINDMLINE1COL1
+                 118 ;                               LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                 119 ;                               ld HL,#NumberOfDaysDecimal
+                 120 ;                               ld A,[HL]       
+                 121 ;                               ld IX, #LCDMAINDMLINE1COL13
+                 122 ;                               LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                 123 ;                               
+                 124 ;                               ld HL,#NumberOfDaysDecimal
+                 125 ;                               add [HL],#01H
+                 126 ;                               inc HL
+                 127 ;                               adc [HL],#0
+                 128 ;                               inc HL
+                 129 ;                               adc [HL],#0
+                 130 ;
+                 131 ;                               ld HL,#NumberOfDaysDecimal
+                 132 ;                               add [HL],#99H
+                 133 ;                               inc HL
+                 134 ;                               adc [HL],#0
+                 135 ;                               inc HL
+                 136 ;                               adc [HL],#0
+                 137 ;
+                 138 ;                               ld HL,#NumberOfDaysDecimal
+                 139 ;                               add [HL],#99H
+                 140 ;                               inc HL
+                 141 ;                               adc [HL],#0
+                 142 ;                               inc HL
+                 143 ;                               adc [HL],#0
+                 144 ;
+                 145 ;                               ld HL,#NumberOfDaysDecimal+2
+                 146 ;                               ld A,[HL]       
+                 147 ;                               ld IX, #LCDMAINDMLINE2COL1
+                 148 ;                               LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                 149 ;                               ld HL,#NumberOfDaysDecimal+1
+                 150 ;                               ld A,[HL]       
+                 151 ;                               ld IX, #LCDMAINDMLINE2COL13
+                 152 ;                               LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_NO_ZERO_SUP
+                 153 ;                               ld HL,#NumberOfDaysDecimal
+                 154 ;                               ld A,[HL]       
+                 155 ;                               ld IX, #LCDMAINDMLINE2COL25
+                 156 ;                               LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_NO_ZERO_SUP
+                 157 ;
+                 158 ;                               ret
+                 159                                 
+00F369 B200      160                                 ld L,#0
+00F36B CED668F3  161                                 ld [dlnLoadCount],L
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   5
+
+ADDR   CODE      LINE SOURCELINE
+                 162 
+00F36F           163                 dlnReload:
+                 164                 
+                 165                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 166                                 ;read deadline from database
+00F36F B908F1    167                                 ld      HL, [CORECurrentADDAddress]
+00F372 BD07F0    168                 ld      [DBExternalMemoryAddress], HL
+                 169                 DB_OPEN_FILE
+                +169 ; 
+                +169 ;                 car     dbOpenFile
+00F375 F2A427   +169 ; ;     carL    dbOpenFile
+                +169 ; 
+                +169 ; 
+                 170                 
+                 171                 ; Setup the record number to retrieve
+00F378 B906F1    172                                 ld      HL, [CORECurrentASDAddress]
+00F37B C10000    173                                 add     HL,#DLNDBINDEXOFFSET
+00F37E CFC1      174                                 ld      HL, [HL]
+00F380 BD0DF0    175                 ld      [DBRecordNumber], HL
+                 176 
+                 177                 ; Read date
+00F383 C53BF3    178                 ld      HL, #DeadlineDatabaseData
+00F386 BD05F0    179                 ld      [DBInternalMemoryAddress], HL
+00F389 B205      180                 ld      L, #DLNRECORDDATESIZE
+00F38B CED60BF0  181                 ld      [DBLengthLo], L
+                 182                 DB_READ_RECORD_RANDOMFIX
+                +182 ; 
+                +182 ;                 car     dbReadRecordRandomFix
+00F38F F22D28   +182 ; ;     carL    dbReadRecordRandomFix
+                +182 ; 
+                +182 ; 
+                 183 
+                 184                                 ; Read desc                             
+00F392 C544F3    185                 ld      HL, #DeadlineDescData
+00F395 BD05F0    186                 ld      [DBInternalMemoryAddress], HL                
+00F398 B208      187                 ld      L, #DLNRECORDDESCSIZE
+00F39A CED60BF0  188                 ld      [DBLengthLo], L
+00F39E B205      189                 ld      L, #DLNRECORDDESCOFFSET
+00F3A0 CED60FF0  190                 ld      [DBRecordOffset], L                
+                 191                 DB_READ_RECORD_WITHOFFSET_RANDOMFIX
+                +191 ; 
+                +191 ;                 car     dbReadRecordOffsetRandomFix
+00F3A4 F21D28   +191 ; ;     carL    dbReadRecordOffsetRandomFix
+                +191 ; 
+                +191 ; 
+                 192                 
+                 193                 DB_CLOSE_FILE
+                +193 ; 
+                +193 ;                 car     dbCloseFile
+00F3A7 F2BB27   +193 ; ;     carL    dbCloseFile
+                +193 ; 
+                +193 ; 
+                 194 
+                 195                                 ; empty ?
+00F3AA CED03BF3  196                                 ld A,[DeadlineDatabaseData]
+00F3AE 3200      197                                 cp A,#0
+                 198                                 jr nz,dlnNotEmpty
+00F3B0 E715     +198 ;       jrS     nz, dlnNotEmpty
+                 199                                 ; try only max records times
+00F3B2 CED268F3  200                                 ld L,[dlnLoadCount]
+00F3B6 82        201                                 inc L
+00F3B7 CED668F3  202                                 ld [dlnLoadCount],L
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   6
+
+ADDR   CODE      LINE SOURCELINE
+00F3BB CEBD14    203                                 cp L,#DLNMAXDBRECORDS
+                 204                                 jr Z,dlnEmpty
+00F3BE EE5B01   +204 ;       jrL     Z, dlnEmpty
+                 205                                 ; goto next
+                 206                                 car dlnNextRecord
+00F3C1 F21D02   +206 ;       carL    dlnNextRecord
+                 207                                 jr dlnReload
+00F3C4 F1AA     +207 ;       jrS     dlnReload
+                 208                                 
+00F3C6           209                 dlnNotEmpty:
+                 210 
+                 211                                 ; DEBUG
+                 212                                 ;ld IX,#DeadlineBuffer+2
+                 213                                 ;car dlnGoBackFromOneMonth
+                 214                                 ;ld IX,#DeadlineBuffer+2
+                 215                                 ;car dlnGoBackFromOneMonth
+                 216                                 ;ld IX,#DeadlineBuffer+2
+                 217                                 ;car dlnGoBackFromOneMonth
+                 218                                 ;ld IX,#DeadlineBuffer+2
+                 219                                 ;car dlnGoBackFromOneMonth
+                 220                                 ;ld IX,#DeadlineBuffer+2
+                 221                                 ;car dlnGoBackFromOneMonth
+                 222                                 ;ld IX,#DeadlineBuffer+2
+                 223                                 ;car dlnGoBackFromOneMonth
+                 224                                 ;ld IY, #DeadlineBuffer+2
+                 225                                 ;UTL_DISPLAY_DATE_COMPLETE
+                 226                                 ;ret
+                 227                                 
+                 228                                 ; DEBUG
+                 229                                 ;ld L,[DBNumberOfRecords]
+                 230                                 ;UTL_CONVERT_HEX_TO_2DIGIT_BCD
+                 231                                 ;ld IX, #LCDMAINDMLINE1COL1
+                 232                                 ;LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                 233                                 ;ld L,[DBSizePerRecord]
+                 234                                 ;UTL_CONVERT_HEX_TO_2DIGIT_BCD
+                 235                                 ;ld IX, #LCDMAINDMLINE2COL1
+                 236                                 ;LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                 237                                 ;ld L,[DBRecordNumber]
+                 238                                 ;UTL_CONVERT_HEX_TO_2DIGIT_BCD
+                 239                                 ;ld IX, #LCDMAINDMLINE1COL10
+                 240                                 ;LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_NO_ZERO_SUP
+                 241                                 ;ld L,[DBRecordNumber+1]
+                 242                                 ;UTL_CONVERT_HEX_TO_2DIGIT_BCD
+                 243                                 ;ld IX, #LCDMAINDMLINE1COL22
+                 244                                 ;LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_NO_ZERO_SUP
+                 245                 
+                 246                                 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 247 
+                 248                                 LCD_CLR_DISPLAY
+                +248 ;                 
+                +248 ;                 car     lcdClearDisplay
+00F3C6 F276B1   +248 ; ;     carL    lcdClearDisplay
+                +248 ; 
+                +248 ; 
+                 249 
+                 250                 ; display desc on bottom line
+00F3C9 C741F3    251                                 ld IY, #DeadlineDescDisplay
+                 252                                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +252 ;                 
+                +252 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+00F3CC F2EB9E   +252 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +252 ; 
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   7
+
+ADDR   CODE      LINE SOURCELINE
+                +252 ; 
+                 253 
+                 254                                 ; display date and day of week information for deadline
+00F3CF C73CF3    255                                 ld IY, #DeadlineBuffer+2
+                 256                                 UTL_DISPLAY_DATE_COMPLETE
+                +256 ; 
+                +256 ;                 car     utlDisplayDateComplete
+00F3D2 F2122B   +256 ; ;     carL    utlDisplayDateComplete
+                +256 ; 
+                +256 ; 
+                 257 
+                 258                                 ; copy the primary time zone data to today buffer
+00F3D5 CED053F2  259                                 ld A, [COREPTZIndex]
+00F3D9 C72EF3    260                                 ld IY, #TodayBuffer
+                 261                                 KTOD_COPY_TIME_MIN_TO_DOW_FROM_RESOURCE
+                +261 ; 
+                +261 ;                 car     ktodCopyTimeMinToDOWFromResource
+00F3DC F2A04B   +261 ; ;     carL    ktodCopyTimeMinToDOWFromResource
+                +261 ;                                 
+                +261 ;        
+                 262 
+                 263                                 ; check if deadline prior from today
+00F3DF C63CF3    264                                 ld IX,#DeadlineBuffer+2
+00F3E2 C730F3    265                                 ld IY,#TodayBuffer+2
+                 266                                 car dlnDateInf
+00F3E5 F26D01   +266 ;       carL    dlnDateInf
+00F3E8 3201      267                                 cp A,#1
+                 268                                 jr NZ,dlnNotPast
+00F3EA E768     +268 ;       jrS     NZ, dlnNotPast
+                 269 
+                 270                                 ; invert dates
+                 271                                 ; -> today => tmp                               
+00F3EC CED030F3  272                                 ld A, [TodayBuffer+2]
+00F3F0 C535F3    273                                 ld HL,#TmpBuffer
+00F3F3 68        274                                 ld [HL],A
+00F3F4 CED031F3  275                                 ld A, [TodayBuffer+3]
+00F3F8 C536F3    276                                 ld HL,#TmpBuffer+1
+00F3FB 68        277                                 ld [HL],A
+00F3FC CED032F3  278                                 ld A, [TodayBuffer+4]
+00F400 C537F3    279                                 ld HL,#TmpBuffer+2
+00F403 68        280                                 ld [HL],A
+00F404 CED033F3  281                                 ld A, [TodayBuffer+5]
+00F408 C538F3    282                                 ld HL,#TmpBuffer+3
+00F40B 68        283                                 ld [HL],A
+                 284                                 ; -> deadline => today
+00F40C CED03CF3  285                                 ld A, [DeadlineBuffer+2]
+00F410 C530F3    286                                 ld HL,#TodayBuffer+2
+00F413 68        287                                 ld [HL],A
+00F414 CED03DF3  288                                 ld A, [DeadlineBuffer+3]
+00F418 C531F3    289                                 ld HL,#TodayBuffer+3
+00F41B 68        290                                 ld [HL],A
+00F41C CED03EF3  291                                 ld A, [DeadlineBuffer+4]
+00F420 C532F3    292                                 ld HL,#TodayBuffer+4
+00F423 68        293                                 ld [HL],A
+00F424 CED03FF3  294                                 ld A, [DeadlineBuffer+5]
+00F428 C533F3    295                                 ld HL,#TodayBuffer+5
+00F42B 68        296                                 ld [HL],A
+                 297                                 ; -> tmp => deadline
+00F42C CED035F3  298                                 ld A, [TmpBuffer]
+00F430 C53CF3    299                                 ld HL,#DeadlineBuffer+2
+00F433 68        300                                 ld [HL],A
+00F434 CED036F3  301                                 ld A, [TmpBuffer+1]
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   8
+
+ADDR   CODE      LINE SOURCELINE
+00F438 C53DF3    302                                 ld HL,#DeadlineBuffer+3
+00F43B 68        303                                 ld [HL],A
+00F43C CED037F3  304                                 ld A, [TmpBuffer+2]
+00F440 C53EF3    305                                 ld HL,#DeadlineBuffer+4
+00F443 68        306                                 ld [HL],A
+00F444 CED038F3  307                                 ld A, [TmpBuffer+3]
+00F448 C53FF3    308                                 ld HL,#DeadlineBuffer+5
+00F44B 68        309                                 ld [HL],A
+                 310 
+00F44C C54FF3    311                                 ld HL,#PastDeadline
+00F44F B501      312                                 ld [HL],#1
+                 313                         
+                 314                                 jr dlnEndPastTest
+00F451 F106     +314 ;       jrS     dlnEndPastTest
+                 315                                         
+00F453           316                 dlnNotPast:
+                 317 
+00F453 C54FF3    318                                 ld HL,#PastDeadline
+00F456 B500      319                                 ld [HL],#0
+                 320 
+00F458           321                 dlnEndPastTest:
+                 322 
+                 323                                 ; compute the number of days between deadline and today
+                 324 
+                 325                                 ; -> init to zero
+00F458 B000      326                                 ld A,#0
+00F45A CED44CF3  327                                 ld [NumberOfDaysDecimal],A
+00F45E CED44DF3  328                                 ld [NumberOfDaysDecimal+1],A
+00F462 CED44EF3  329                                 ld [NumberOfDaysDecimal+2],A
+                 330 
+00F466           331                 dlnComputeDays:
+                 332                 
+                 333                                 ; -> while "today" month and years are different from deadline month and
+                     years
+                 334                                 ;   -> compare month
+00F466 CED031F3  335                                 ld A,[TodayBuffer+3]
+00F46A CED13DF3  336                                 ld B,[DeadlineBuffer+3]
+00F46E 31        337                                 cp A,B
+                 338                                 jr NZ,dlnComputeDaysContinue
+00F46F E719     +338 ;       jrS     NZ, dlnComputeDaysContinue
+                 339                                 ;   -> compare year low
+00F471 CED032F3  340                                 ld A,[TodayBuffer+4]
+00F475 CED13EF3  341                                 ld B,[DeadlineBuffer+4]
+00F479 31        342                                 cp A,B
+                 343                                 jr NZ,dlnComputeDaysContinue
+00F47A E70E     +343 ;       jrS     NZ, dlnComputeDaysContinue
+                 344                                 ;   -> compare year high
+00F47C CED033F3  345                                 ld A,[TodayBuffer+5]
+00F480 CED13FF3  346                                 ld B,[DeadlineBuffer+5]
+00F484 31        347                                 cp A,B
+                 348                                 jr NZ,dlnComputeDaysContinue
+00F485 E703     +348 ;       jrS     NZ, dlnComputeDaysContinue
+                 349                                 ; -> equals !
+                 350                                 jr dlnComputeDaysDone
+00F487 F11E     +350 ;       jrS     dlnComputeDaysDone
+                 351                                 
+00F489           352                 dlnComputeDaysContinue:
+                 353                                 
+                 354                                 ; -> add current date number of days to the days counter
+                 355                                 
+00F489 CED03CF3  356                                 ld A,[DeadlineBuffer+2]
+                 357                                 ;ld A,#31H
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   9
+
+ADDR   CODE      LINE SOURCELINE
+                 358 
+                 359                                 UTL_DECIMAL_MATH_MODE
+                +359 ; 
+00F48D 9D10     +359 ;                 or      SC, #bDecimalFlag
+                +359 ;                                 
+00F48F C54CF3    360                                 ld HL,#NumberOfDaysDecimal
+00F492 CE04      361                                 add [HL],A
+00F494 91        362                                 inc HL
+00F495 CE0D00    363                                 adc [HL],#0
+00F498 91        364                                 inc HL
+00F499 CE0D00    365                                 adc [HL],#0
+                 366                                 UTL_BINARY_MATH_MODE    
+                +366 ; 
+00F49C 9CEF     +366 ;                 and     SC, #@LOW(~bDecimalFlag)
+                +366 ;                                 
+                 367 
+00F49E           368                     dlnAdd1Done:
+                 369                     
+                 370                                 ; -> go to previous month
+                 371                                 ;ld A, [DeadlineBuffer+2]
+                 372                                 ;ld IY, #DeadlineBuffer+2
+                 373                                 ;KTOD_SUBTRACT_DAYS
+                 374                                 ;ld IY, #DeadlineBuffer+2
+                 375                                 ;KTOD_ADJUST_DATE_AND_YEAR
+                 376 
+00F49E C63CF3    377                                 ld IX, #DeadlineBuffer+2
+                 378                                 car dlnGoBackFromOneMonth
+00F4A1 F21E01   +378 ;       carL    dlnGoBackFromOneMonth
+                 379                                 
+                 380                                 jr dlnComputeDays
+00F4A4 F1C1     +380 ;       jrS     dlnComputeDays
+                 381                                 
+00F4A6           382                 dlnComputeDaysDone:
+                 383 
+                 384                                 ; -> subtract days of deadline from today current day value
+                 385                                 UTL_DECIMAL_MATH_MODE
+                +385 ; 
+00F4A6 9D10     +385 ;                 or      SC, #bDecimalFlag
+                +385 ;                                 
+00F4A8 CED130F3  386                                 ld B, [TodayBuffer+2]
+00F4AC CED03CF3  387                                 ld A, [DeadlineBuffer+2]
+00F4B0 11        388                                 sub A,B
+                 389                                 
+                 390                                 ; -> add this to number of days
+00F4B1 C54CF3    391                                 ld HL,#NumberOfDaysDecimal
+00F4B4 CE04      392                                 add [HL],A
+00F4B6 91        393                                 inc HL
+00F4B7 CE0D00    394                                 adc [HL],#0
+00F4BA 91        395                                 inc HL
+00F4BB CE0D00    396                                 adc [HL],#0
+                 397                                 UTL_BINARY_MATH_MODE    
+                +397 ; 
+00F4BE 9CEF     +397 ;                 and     SC, #@LOW(~bDecimalFlag)
+                +397 ;                                 
+                 398                                 
+00F4C0           399                     dlnAdd2Done:
+                 400 
+                 401                                 ; we are done ! => display result
+                 402 
+                 403                                 ; display the number of days
+                 404 
+00F4C0 CED04EF3  405                                 ld A,[NumberOfDaysDecimal+2]
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  10
+
+ADDR   CODE      LINE SOURCELINE
+00F4C4 3200      406                                 cp A,#0
+                 407                                 jr nz,dlnLongDisplay
+00F4C6 E70A     +407 ;       jrS     nz, dlnLongDisplay
+00F4C8 CED04DF3  408                                 ld A,[NumberOfDaysDecimal+1]
+00F4CC 3209      409                                 cp A,#09H
+                 410                                 jr LT,dlnShortDisplay
+00F4CE CEE027   +410 ;       jrS     LT, dlnShortDisplay
+                 411                                 
+00F4D1           412                         dlnLongDisplay:
+                 413                         
+00F4D1 CED04EF3  414                                 ld A,[NumberOfDaysDecimal+2]
+00F4D5 C602F9    415                                 ld IX, #LCDMAINDMLINE1COL1
+                 416                                 LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                +416 ;                 
+                +416 ;                 car     lcdDispSmFntFixedWidthDMPairWithZerosSup
+00F4D8 F23D9C   +416 ; ;     carL    lcdDispSmFntFixedWidthDMPairWithZerosSup
+                +416 ; 
+                +416 ; 
+00F4DB CED04DF3  417                                 ld A,[NumberOfDaysDecimal+1]
+00F4DF C60EF9    418                                 ld IX, #LCDMAINDMLINE1COL13
+                 419                                 LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_SUP_ZERO
+                +419 ;                 
+                +419 ;                 car     lcdDispSmFntFixedWidthDMPairWithZerosSup
+00F4E2 F2339C   +419 ; ;     carL    lcdDispSmFntFixedWidthDMPairWithZerosSup
+                +419 ; 
+                +419 ; 
+00F4E5 CED04CF3  420                                 ld A,[NumberOfDaysDecimal]
+00F4E9 C61AF9    421                                 ld IX, #LCDMAINDMLINE1COL25
+                 422                                 LCD_DISP_SMALL_FIXED_WIDTH_2DIG_DM_DATA_NO_ZERO_SUP
+                +422 ;                 
+                +422 ;                 car     lcdDispSmFntFixedWidthDMPairNoSup
+00F4EC F2519C   +422 ; ;     carL    lcdDispSmFntFixedWidthDMPairNoSup
+                +422 ; 
+                +422 ; 
+                 423                                 ; display "days" message
+00F4EF C757F3    424                                 ld IY, #dlnDaysLongDisplay
+                 425                                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +425 ;                 
+                +425 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+00F4F2 F2C59D   +425 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +425 ; 
+                +425 ; 
+                 426 
+                 427                                 jr dlnEndDisplay
+00F4F5 F115     +427 ;       jrS     dlnEndDisplay
+                 428                                 
+00F4F7           429                         dlnShortDisplay:
+                 430 
+00F4F7 CED04CF3  431                                 ld A,[NumberOfDaysDecimal]
+00F4FB CED14DF3  432                                 ld B,[NumberOfDaysDecimal+1]
+00F4FF C602F9    433                                 ld IX, #LCDMAINDMLINE1COL1
+                 434                                 LCD_DISP_SMALL_FIXED_WIDTH_3DIG_DM_DATA_NO_LSD_SUP
+                +434 ;                 
+                +434 ;                 car     lcdDispSmFntFixedWidth3DigitDMNoLSDSup
+00F502 F2319C   +434 ; ;     carL    lcdDispSmFntFixedWidth3DigitDMNoLSDSup
+                +434 ; 
+                +434 ; 
+                 435                                 ; display "days" message
+00F505 C750F3    436                                 ld IY, #dlnDaysShortDisplay
+                 437                                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +437 ;                 
+                +437 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  11
+
+ADDR   CODE      LINE SOURCELINE
+00F508 F2AF9D   +437 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +437 ; 
+                +437 ; 
+                 438 
+00F50B           439                         dlnEndDisplay:
+                 440 
+                 441                                 ; display past message if needed
+00F50B CED04FF3  442                                 ld A,[PastDeadline]
+00F50F 3200      443                                 cp A,#0
+                 444                                 jr Z,dlnEndPastDisplay
+00F511 E607     +444 ;       jrS     Z, dlnEndPastDisplay
+                 445                                 ; past message
+00F513 C764F3    446                                 ld IY, #dlnPastDisplay
+                 447                                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +447 ;                 
+                +447 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+00F516 F2A19D   +447 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +447 ; 
+                +447 ; 
+                 448                                 
+00F519           449 dlnEndPastDisplay:
+                 450 
+                 451                                 ; done
+                 452                                 jr dlnDefaultDisplayExit
+00F519 F109     +452 ;       jrS     dlnDefaultDisplayExit
+                 453 
+00F51B           454 dlnEmpty:
+                 455                                 ; empty message
+00F51B C75CF3    456                                 ld IY, #dlnEmptyDisplay
+                 457                                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +457 ;                 
+                +457 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+00F51E F2999D   +457 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +457 ; 
+                +457 ; 
+                 458                 ; display record number
+                 459                                 jr dlnDefaultDisplayExit
+00F521 F101     +459 ;       jrS     dlnDefaultDisplayExit
+                 460                                 
+00F523           461 dlnDefaultDisplayExit:
+                 462 
+00F523 F8        463                 ret
+                 464 
+                 465 
+                 466 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 467 ;
+                 468 ; Module Name : dlnwaSetDisplay
+                 469 ; Description : Display SET DEFAULT at set default entry. This is merely used by the wizard
+                 470 ; Input(s)    : None
+                 471 ; Output(s)   : None
+                 472 ;
+                 473 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 474 
+                 476 
+00F524           477 dlnwaSetDisplay:
+                 478 
+00F524 C72EF5    479                 ld        IY,#dlnSetDisplayLine1
+00F527 C634F5    480                 ld        IX,#dlnSetDisplayLine2
+                 481                 car       dlnDisplayLine1Line2
+00F52A F014     +481 ;       carS    dlnDisplayLine1Line2
+                 482 
+                 483                 jr        dlnSetDisplayExit
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  12
+
+ADDR   CODE      LINE SOURCELINE
+00F52C F111     +483 ;       jrS     dlnSetDisplayExit
+                 484 
+00F52E           485 dlnSetDisplayLine1:
+00F52E 0FF9      486                 dw        LCDMAINDMLINE1COL14
+00F530 031D0F1E  487                 db        3, DM5_S, DM5_E, DM5_T
+                 488 
+00F534           489 dlnSetDisplayLine2:
+                 490 
+00F534 07FA      491                 dw        LCDMAINDMLINE2COL6
+00F536 070E0F10  492                 db        7, DM5_D, DM5_E, DM5_F, DM5_A, DM5_U,DM5_L,DM5_T
+       0B1F161E     
+                 493 
+00F53E           494 dlnSetDisplayExit:
+                 495 
+00F53E F8        496                 ret
+                 497 
+                 498 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 499 
+                 500 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 501 ;
+                 502 ; Module Name : tsawaDisplayLine1Line2
+                 503 ; Description : Display message at Main Dot Matrix Line 1 and Line 2
+                 504 ; Input(s)    : IY = table address for Line1, IX = table address for Line2
+                 505 ; Output(s)   : None
+                 506 ;
+                 507 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 508 
+00F53F           509 dlnDisplayLine1Line2:
+                 510 
+00F53F A2        511                 push      IX
+                 512                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +512 ;                 
+                +512 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+00F540 F2779D   +512 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +512 ; 
+                +512 ; 
+                 513 
+00F543 AA        514                 pop       IX
+00F544 CFEE      515                 ld        IY,IX
+                 516                 LCD_DISP_FORMATTED_SMALL_PROP_WIDTH_DM_MSG
+                +516 ;                 
+                +516 ;                 car     lcdDispFormattedSmFntPropWidthDMMsg
+00F546 F2719D   +516 ; ;     carL    lcdDispFormattedSmFntPropWidthDMMsg
+                +516 ; 
+                +516 ; 
+                 517 
+00F549           518 dlnDisplayLine1Line2Exit:
+00F549 F8        519                 ret
+                 520 
+                 521 
+                 522 ;==============================================================================
+                 523 ;
+                 524 ;                THIS IS YOUR COSTUMIZED MODE BANNER CREATED FROM WRISTAPP WIZARD
+                 525 ;
+                 526 ;==============================================================================
+                 527 
+00F54A           529 dlnBannerMsg:
+                 530 
+00F54A 820E0F0B  531                 db        LCDBANNER_COL1, DM5_D, DM5_E, DM5_A, DM5_D, DM5_L, DM5_I, DM5_N, DM5_E
+       0E161318     
+       0F           
+00F553 FF        532                 db        LCD_END_BANNER
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  13
+
+ADDR   CODE      LINE SOURCELINE
+                 533 
+                 534 
+                 535                 ;TODO: Add your own functionality display below or edit above display routines
+                 102     INCLUDE 'C:\M851\App\deadline\src\dlnutil.asm'
+                   1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   2 ;
+                   3 ; File Name :   dlnUtil.asm
+                   4 ; Purpose   :   deadline Wrist App Common Utility Routines
+                   5 ;
+                   6 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   7 ;    Copyright (C) 2003 Sylvain Lefebvre
+                   8 ;
+                   9 ;    This program is free software; you can redistribute it and/or modify
+                  10 ;    it under the terms of the GNU General Public License as published by
+                  11 ;    the Free Software Foundation; (version 2)
+                  12 ;
+                  13 ;    This program is distributed in the hope that it will be useful,
+                  14 ;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                  15 ;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                  16 ;    GNU General Public License for more details.
+                  17 ;
+                  18 ;    You should have received a copy of the GNU General Public License
+                  19 ;    along with this program; if not, write to the Free Software
+                  20 ;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+                  21 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  22 ;;;;;;;;;;;;;DO NOT MODIFY THE FOLLOWING SUBROUTINE DEFINITION;;;;;;;;;;;;;;;;;
+                  23 
+                  25                     UNDEF SUBROUTINE
+                  27                 DEFINE  SUBROUTINE      "'dlnutil'"
+                  28 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  29 
+                  30 
+                  31 ; =============================================================================
+                  32 ; compares two dates
+                  33 ; A == 1 if (date)IX < (date)IY
+                  34 ; A == 0 otherwise
+                  35 ; =============================================================================
+                  37 
+00F554            38 dlnDateInf:
+                  39     
+                  40     ; year hi
+00F554 CE4003     41     ld A,[IX+3]
+00F557 CE3103     42         cp A,[IY+3]
+                  43         jr LT,dlnDateInfTrue
+00F55A CEE024    +43 ;       jrS     LT, dlnDateInfTrue
+                  44         jr GT,dlnDateInfFalse
+00F55D CEE225    +44 ;       jrS     GT, dlnDateInfFalse
+                  45     ; year lo
+00F560 CE4002     46     ld A,[IX+2]
+00F563 CE3102     47         cp A,[IY+2]
+                  48         jr LT,dlnDateInfTrue
+00F566 CEE018    +48 ;       jrS     LT, dlnDateInfTrue
+                  49         jr GT,dlnDateInfFalse
+00F569 CEE219    +49 ;       jrS     GT, dlnDateInfFalse
+                  50     ; month
+00F56C CE4001     51     ld A,[IX+1]
+00F56F CE3101     52         cp A,[IY+1]
+                  53         jr LT,dlnDateInfTrue
+00F572 CEE00C    +53 ;       jrS     LT, dlnDateInfTrue
+                  54         jr GT,dlnDateInfFalse
+00F575 CEE20D    +54 ;       jrS     GT, dlnDateInfFalse
+                  55     ; day
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  14
+
+ADDR   CODE      LINE SOURCELINE
+00F578 46         56     ld A,[IX]
+00F579 37         57         cp A,[IY]
+                  58         jr LT,dlnDateInfTrue
+00F57A CEE004    +58 ;       jrS     LT, dlnDateInfTrue
+                  59         jr GE,dlnDateInfFalse
+00F57D CEE305    +59 ;       jrS     GE, dlnDateInfFalse
+                  60         
+00F580            61 dlnDateInfTrue:
+00F580 B001       62         ld A,#1
+                  63         jr dlnDateInfExit
+00F582 F103      +63 ;       jrS     dlnDateInfExit
+00F584            64 dlnDateInfFalse:
+00F584 B000       65         ld A,#0
+00F586            66 dlnDateInfExit:
+00F586 F8         67                 ret
+                  68 
+                  69 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  70 
+                  71 ; =============================================================================
+                  72 ; computes the number of days of a month
+                  73 ; result in B
+                  74 ; =============================================================================
+                  76 
+00F587            77 dlnDaysInMonth:
+                  78 
+                  79         jr dlnDaysInMonthStart
+00F587 F10D      +79 ;       jrS     dlnDaysInMonthStart
+00F589            80 dlnDaysInMonthData:
+00F589 31         81         db 31H
+00F58A 00         82         db 00H
+00F58B 31         83         db 31H
+00F58C 30         84         db 30H
+00F58D 31         85         db 31H
+00F58E 30         86         db 30H
+00F58F 31         87         db 31H
+00F590 31         88         db 31H
+00F591 30         89         db 30H
+00F592 31         90         db 31H
+00F593 30         91         db 30H
+00F594 31         92         db 31H
+00F595            93 dlnDaysInMonthStart:
+                  94     ; month
+00F595 CE4001     95     ld A,[IX+1]
+00F598 3202       96     cp A,#2
+                  97     jr NZ,dlnDaysInMonthNotFebruary
+00F59A E714      +97 ;       jrS     NZ, dlnDaysInMonthNotFebruary
+                  98     ; year hi
+00F59C CE4803     99     ld B,[IX+3]
+                 100     ; year lo
+00F59F CE4002    101     ld A,[IX+2]
+                 102         ; leap year ?
+                 103     KTOD_CHECK_IF_LEAP_YEAR
+                +103 ; 
+                +103 ;                 car     ktodCheckIfLeapYear
+00F5A2 F2954A   +103 ; ;     carL    ktodCheckIfLeapYear
+                +103 ;                                 
+                +103 ;        
+                 104         jr NZ,dlnDaysInMonthNotLeap
+00F5A5 E705     +104 ;       jrS     NZ, dlnDaysInMonthNotLeap
+                 105 
+00F5A7 B129      106         ld B,#29H
+                 107         jr dlnDaysInMonthExit
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  15
+
+ADDR   CODE      LINE SOURCELINE
+00F5A9 F116     +107 ;       jrS     dlnDaysInMonthExit
+                 108 
+00F5AB           109 dlnDaysInMonthNotLeap:
+                 110         
+00F5AB B128      111         ld B,#28H
+                 112         jr dlnDaysInMonthExit
+00F5AD F112     +112 ;       jrS     dlnDaysInMonthExit
+                 113         
+00F5AF           114 dlnDaysInMonthNotFebruary:
+                 115 
+                 116         UTL_BINARY_MATH_MODE    
+                +116 ; 
+00F5AF 9CEF     +116 ;                 and     SC, #@LOW(~bDecimalFlag)
+                +116 ;                                 
+00F5B1 CE4001    117         ld  A,[IX+1]
+00F5B4 B100      118         ld  B,#0
+                 119         KTOD_CONVERT_BCD_TO_HEX 
+                +119 ; 
+                +119 ;                 car     ktodConvertBCDtoHEX
+00F5B6 F2DF4A   +119 ; ;     carL    ktodConvertBCDtoHEX
+                +119 ;                                 
+                +119 ;        
+00F5B9 88        120         dec A
+00F5BA C589F5    121         ld  HL,#dlnDaysInMonthData
+00F5BD CF20      122         add HL,BA
+00F5BF 4D        123         ld  B,[HL]
+                 124         
+00F5C0           125 dlnDaysInMonthExit:
+00F5C0 F8        126                 ret
+                 127 
+                 128 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 129 
+                 130 ; =============================================================================
+                 131 ; Go back from one month
+                 132 ; change the date
+                 133 ; =============================================================================
+                 135 
+00F5C1           136 dlnGoBackFromOneMonth:
+                 137         
+                 138         UTL_DECIMAL_MATH_MODE
+                +138 ; 
+00F5C1 9D10     +138 ;                 or      SC, #bDecimalFlag
+                +138 ;                                 
+                 139     ; update month
+00F5C3 CFE6      140     ld  HL,IX
+00F5C5 91        141     inc HL
+00F5C6 CE1501    142     sub [HL],#01H
+                 143     jr NZ,dlnGoBackFromOneMonthYearOk
+00F5C9 E70E     +143 ;       jrS     NZ, dlnGoBackFromOneMonthYearOk
+                 144         ; update year
+00F5CB 91        145     inc HL
+00F5CC CE1501    146     sub [HL],#01H
+00F5CF 91        147     inc HL
+00F5D0 CE1D00    148     sbc [HL],#0
+                 149     ; -> month <= 12
+00F5D3 CFE6      150     ld  HL,IX
+00F5D5 91        151     inc HL
+00F5D6 B512      152     ld  [HL],#12H
+00F5D8           153 dlnGoBackFromOneMonthYearOk:
+                 154         ; update days
+                 155         car dlnDaysInMonth
+00F5D8 F0AE     +155 ;       carS    dlnDaysInMonth
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page  16
+
+ADDR   CODE      LINE SOURCELINE
+00F5DA CFE6      156     ld  HL,IX
+00F5DC 69        157     ld  [HL],B
+00F5DD           158 dlnGoBackFromOneMonthExit:
+                 159         UTL_BINARY_MATH_MODE    
+                +159 ; 
+00F5DD 9CEF     +159 ;                 and     SC, #@LOW(~bDecimalFlag)
+                +159 ;                                 
+00F5DF F8        160     ret
+                 161 
+                 162 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 163 
+                 164 ; =============================================================================
+                 165 ; Next record
+                 166 ;
+                 167 ; =============================================================================
+                 169 
+00F5E0           170 dlnNextRecord:
+                 171 
+                 172     ; get current record number
+00F5E0 BA06F1    173     ld      IX, [CORECurrentASDAddress]
+00F5E3 C20000    174     add     IX, #DLNDBINDEXOFFSET
+00F5E6 CFD0      175     ld      BA, [IX]
+00F5E8 90        176     inc     BA
+00F5E9 D41400    177     cp      BA,#DLNMAXDBRECORDS
+                 178     jr      C,dlnDSDEOk
+00F5EC E404     +178 ;       jrS     C, dlnDSDEOk
+                 179     ; back to record 0
+00F5EE C40000    180     ld      BA, #0000H
+00F5F1           181 dlnDSDEOk:
+                 182     ; store the new record to display
+00F5F1 CFD4      183     ld      [IX], BA                            
+00F5F3 F8        184         ret
+                 103 
+                 104     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 105     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 106 
+00F5F4           108 CommonCodeEnd:
+                 109 
+                 112 
+                 113 ;**END FILE COMMON.ASM
+
+Section summary:
+
+ NR ADDR   SIZE CYCLE NAME
+  1 00F31A 02da   845 .text

@@ -1,0 +1,37 @@
+P r o c e s s   t a b l e
+=========================
+
+Pid #		Load_mod
+0000		param.out
+
+
+M a p   p e r   c l u s t e r
+=============================
+
+Cluster: rom
+Chips:	 i_rom, i_ram, dis_mem, io_mem
+
+Pid #	Section		Physical    Virtual     Size        Amode       Chip
+0000    <reserved>     	0x000026    0x000026    0x000002    (absolute)  i_rom       
+0000    .text          	0x0005f4    0x00f5f4    0x00001c    (absolute)  i_ram       
+
+
+M A P   p e r   L O A D _ M O D
+===============================
+
+
+Load module param.out:
+Section        	Virtual     Size        Physical    
+.text          	0x00f5f4    0x00001c    0x0005f4    
+ 
+Symbols:  Space SMC88_space
+                            Sorted on symbol                               Sorted on address
+                            ----------------                               -----------------
+ dlnwaPORInitializationParameters - 0x00f5f4     dlnwaPORInitializationParameters - 0x00f5f4
+
+
+Sections:
+
+param:
+Sectio   Virtual     Size        
+ .text - 0x00f5f4    0x00001c

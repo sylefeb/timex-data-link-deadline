@@ -1,0 +1,177 @@
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   1
+C:\M851\app\deadline\build\state1.asm
+ADDR   CODE      LINE SOURCELINE
+                   2 
+                   3 ; ********************************************************************
+                   4 ; *
+                   5 ; * M851 WRISTAPP BUILDER
+                   6 ; * Timex Corporation 2002 All Rights Reserved
+                   7 ; * July 2002
+                   8 ; *
+                   9 ; * WristApp: deadline
+                  10 ; *
+                  11 ; ********************************************************************
+                  12 
+                  13 
+                  88 
+                  90 
+                  93 
+                  94      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  95      ;
+                  96      ; ADD WRISTAPP SOURCE FILE TO BE IN THE STATE CODE
+                  97      ;
+                  98      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  99 
+                 100     INCLUDE 'C:\M851\App\deadline\src\dlndef.asm'
+                   1 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   2 ;
+                   3 ; File Name    : dlndef.asm
+                   4 ; Purpose      : deadline Application Default State Manager
+                   5 ;
+                   6 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   7 ;    Copyright (C) 2003 Sylvain Lefebvre
+                   8 ;
+                   9 ;    This program is free software; you can redistribute it and/or modify
+                  10 ;    it under the terms of the GNU General Public License as published by
+                  11 ;    the Free Software Foundation; (version 2)
+                  12 ;
+                  13 ;    This program is distributed in the hope that it will be useful,
+                  14 ;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                  15 ;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                  16 ;    GNU General Public License for more details.
+                  17 ;
+                  18 ;    You should have received a copy of the GNU General Public License
+                  19 ;    along with this program; if not, write to the Free Software
+                  20 ;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+                  21 ;;;;;;;;;;;;;DO NOT MODIFY THE FOLLOWING SUBROUTINE DEFINITION;;;;;;;;;;;;;;;;;
+                  22 
+                  26                 DEFINE  SUBROUTINE      "'dlndef'"
+                  27 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  28 
+                  29 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  30 ;
+                  31 ; Module Name : dlnDefaultStateManager
+                  32 ; Description : deadline Application Default State Manager.
+                  33 ; Assumptions : Display is cleared on first time entry into the state.
+                  34 ; Input(s)    : CORECurrentEvent  - system event to be processed
+                  35 ;               COREEventArgument - event extra information
+                  36 ; Output(s)   : None
+                  37 ;
+                  38 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  39 
+                  41 
+00F5F4            42 dlnDefaultStateManager:
+                  43 
+                  44                 ; Set IYReg the address of the deadline ASD.
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   2
+
+ADDR   CODE      LINE SOURCELINE
+00F5F4 BB06F1     45                 ld      IY, [CORECurrentASDAddress]
+                  46 
+00F5F7 CED002F1   47                 ld      A, [CORECurrentEvent]
+                  48 
+                  49                 ; Check if state entry event.
+00F5FB 3231       50                 cp      A, #DLN_STATEENTRY
+                  51                 jr      Z, dlnDefaultStateStateEntryEvent
+00F5FD E614      +51 ;       jrS     Z, dlnDefaultStateStateEntryEvent
+                  52 
+                  53                 ; Check if mode depress event.
+00F5FF 3206       54                 cp      A, #DLN_MODEDEPRESS
+                  55                 jr      Z, dlnDefaultStateModeDepressEvent
+00F601 E614      +55 ;       jrS     Z, dlnDefaultStateModeDepressEvent
+                  56 
+                  57                 ; Check if crown set event.
+00F603 3202       58                 cp      A, #DLN_CROWNSET
+                  59                 jr      Z, dlnDefaultPulledCrownEvent
+00F605 E606      +59 ;       jrS     Z, dlnDefaultPulledCrownEvent
+                  60 
+                  61                 ; Check if start depress event.
+00F607 3208       62                 cp      A, #DLN_STARTDEPRESS
+                  63                 jr      Z, dlnDefaultStartDepressEvent
+00F609 E610      +63 ;       jrS     Z, dlnDefaultStartDepressEvent
+                  64 
+00F60B F8         65                 ret
+                  66 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  67 
+                  68 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EVENT HANDLERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                  69 
+00F60C            70 dlnDefaultPulledCrownEvent:
+                  71                 ;**************************************************************
+                  72                 ;
+                  73                 ;                       CROWN SET
+                  74                 ;
+                  75                 ;**************************************************************
+                  76 
+00F60C B102       77                 ld      B, #DLNYOUROCKSETSTATE
+                  78                 CORE_REQ_STATE_CHANGE
+                 +78 ;                 
+                 +78 ;                 car     coreRequestStateChange
+00F60E F2DCC6    +78 ; ;     carL    coreRequestStateChange
+                 +78 ;         
+                 +78 ; 
+                  79 
+00F611 F8         80                 ret
+                  81 
+00F612            82 dlnDefaultStateStateEntryEvent:
+                  83                 ;**************************************************************
+                  84                 ;
+                  85                 ;                       STATE ENTRY
+                  86                 ;
+                  87                 ;**************************************************************
+                  88 
+                  89                 ;This is the default display, replace it with your own
+                  90                 car      dlnwaDefaultDisplay
+00F612 F255FD    +90 ;       carL    dlnwaDefaultDisplay
+                  91 
+                  92                 ;TODO: Add your own code initialization here
+                  93 
+00F615 F8         94                 ret
+                  95 
+00F616            96 dlnDefaultStateModeDepressEvent:
+E0C88 assembler v1.2 r3                 SN00000000-061 (c) 2000 TASKING, Inc.
+                                                                                                                            Page   3
+
+ADDR   CODE      LINE SOURCELINE
+                  97                 ;**************************************************************
+                  98                 ;
+                  99                 ;                       MODE DEPRESS
+                 100                 ;
+                 101                 ;**************************************************************
+                 102 
+                 103                 ;This is default to go to the next mode
+                 104 
+                 105                 CORE_REQ_MODE_CHANGE_NEXT
+                +105 ;                 
+                +105 ;                 car     coreRequestModeChangeNext
+00F616 F2C6C6   +105 ; ;     carL    coreRequestModeChangeNext
+                +105 ;         
+                +105 ; 
+                 106 
+00F619 F8        107                 ret
+                 108          
+00F61A           109 dlnDefaultStartDepressEvent:
+                 110 
+                 111                 ;**************************************************************
+                 112                 ;
+                 113                 ;                       START DEPRESS
+                 114                 ;
+                 115                 ;**************************************************************
+                 116                 car      dlnNextRecord
+00F61A F0C5     +116 ;       carS    dlnNextRecord
+                 117                                 ; update display
+                 118                 car      dlnwaDefaultDisplay
+00F61C F24BFD   +118 ;       carL    dlnwaDefaultDisplay
+                 119 
+00F61F F8        120                 ret
+                 101 
+                 102      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 103      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                 104 
+                 105 ;**END FILE STATE1.ASM
+
+Section summary:
+
+ NR ADDR   SIZE CYCLE NAME
+  1 00F5F4 002c    72 .text

@@ -1,0 +1,161 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Français (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOGDEADLINE DIALOGEX 0, 0, 192, 376
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,355,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,135,355,50,14
+    EDITTEXT        IDC_EDIT1,7,7,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER1,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,7,62,15
+    EDITTEXT        IDC_EDIT2,7,23,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER2,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,23,62,15
+    EDITTEXT        IDC_EDIT3,7,39,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER3,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,39,62,15
+    EDITTEXT        IDC_EDIT4,7,54,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER4,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,54,62,15
+    EDITTEXT        IDC_EDIT5,7,70,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER5,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,70,62,15
+    EDITTEXT        IDC_EDIT6,7,86,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER6,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,86,62,15
+    EDITTEXT        IDC_EDIT7,7,103,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER7,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,103,62,15
+    EDITTEXT        IDC_EDIT8,7,119,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER8,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,119,62,15
+    EDITTEXT        IDC_EDIT9,7,135,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER9,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,135,62,15
+    EDITTEXT        IDC_EDIT10,7,151,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER10,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,151,62,15
+    EDITTEXT        IDC_EDIT11,7,167,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER11,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,167,62,15
+    EDITTEXT        IDC_EDIT12,7,183,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER12,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,183,62,15
+    EDITTEXT        IDC_EDIT13,7,199,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER13,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,199,62,15
+    EDITTEXT        IDC_EDIT14,7,215,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER14,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,215,62,15
+    EDITTEXT        IDC_EDIT15,7,231,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER15,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,231,62,15
+    EDITTEXT        IDC_EDIT16,7,247,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER16,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,247,62,15
+    EDITTEXT        IDC_EDIT17,7,263,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER17,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,263,62,15
+    EDITTEXT        IDC_EDIT18,7,279,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER18,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,279,62,15
+    EDITTEXT        IDC_EDIT19,7,295,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER19,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,295,62,15
+    EDITTEXT        IDC_EDIT20,7,311,104,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_DATETIMEPICKER20,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,119,311,62,15
+    LTEXT           "(c) Sylvain Lefebvre 2003",IDC_STATIC,9,330,83,8
+    LTEXT           "                                  ",IDC_STATIC,57,340,
+                    122,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOGDEADLINE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 369
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Français (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
