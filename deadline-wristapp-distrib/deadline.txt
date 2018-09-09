@@ -67,7 +67,7 @@ Known bugs:
 Contact:
 --------
 
-Feel free to send comments and bug reports to Sylvain.Lefebvre@laposte.net
+Feel free to send comments and bug reports to Sylvain dot Lefebvre at laposte.net
 If you like this Wristapp let me know :)
 
 Licence:
